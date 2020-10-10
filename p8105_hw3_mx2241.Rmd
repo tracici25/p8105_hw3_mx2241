@@ -92,6 +92,7 @@ instacart %>%
 ### Problem 2 
 
 Load, Tidy and Wrangle the data
+
 ```{r}
 accel_df = read.csv(
   "./data/accel_data.csv") %>% 
@@ -129,6 +130,7 @@ accel_tidy
 
 The study examines "the accelerometer data collected on a 63 year-old male with BMI 25, who was admitted to the Advanced Cardiac Care Center of Columbia University Medical Center and diagnosed with congestive heart failure(CHF)". The study duration is `r accel_tidy %>% distinct(week, day) %>% nrow` days, and `r accel_tidy %>% distinct(minute_of_the_day) %>% nrow` minutes per day. After tidying and wrangling the original data, the resulting dataset has `r nrow(accel_tidy)` rows(observations) and `r ncol(accel_tidy)` columns(variables), including variables of `r ls(accel_tidy)` with corresponding class of `r lapply(accel_tidy, class)`.
 
+
 Find the total activity of each day
 
 ```{r}
@@ -148,8 +150,8 @@ accel_summary =
 print(accel_summary)
 ```
 
-From looking at the week averages for each week, it can be observed that the patient has similar number of activities on week 1 and week 2. As passing on to week 3, the number of activities decreases a bit. On week 4 and 5, number of activities significantly decreases. Week 2 > Week 1 > Week 3 >> Week 4 > Week 5.
-For week 1-5, the average activities in a day are `r knitr::kable(accel_summary %>% select(Sunday:Saturday) %>% colMeans)` It shows that the patients have the least activities on Saturdays, and the most activities on Fridays. Friday > Wednesday > Thursday > Sunday > Monday > Tuesday > Saturday.
+From looking at the week averages for each week, it can be observed that the patient has similar number of activities on week 1 and week 2. As passing on to week 3, the number of activities decreases a bit. On week 4 and 5, number of activities significantly decreases, which order is Week 2 > Week 1 > Week 3 >> Week 4 > Week 5.
+For week 1-5, the average activities in a day are `r knitr::kable(accel_summary %>% select(Sunday:Saturday) %>% colMeans)` It shows that the patients have the least activities on Saturdays, and the most activities on Fridays, which order is Friday > Wednesday > Thursday > Sunday > Monday > Tuesday > Saturday.
 
 
 Make a plot
@@ -178,18 +180,15 @@ Based on the single-panel plot, it can be observed that from 0am to 5am, the pat
 data("ny_noaa")
 ```
 
-The original dataset `ny_noaa` contains `r nrow(ny_noaa)` rows and `r ncol(ny_noaa)` columns, containing variables of `r ls(ny_noaa)`. It describes different weather parameters - precipitation(tenths of mm), snowfall(mm), snow patch(mm), maximum and minimum temperature (tenths of degree Celsius) - in different weather stations over years. From the data set, the table below shows the missing values of each variable.
+The original dataset "ny_noaa" contains `r nrow(ny_noaa)` rows and `r ncol(ny_noaa)` columns, containing variables of `r ls(ny_noaa)`. It describes different weather parameters - precipitation(tenths of mm), snowfall(mm), snow patch(mm), maximum and minimum temperature (tenths of degree Celsius) - in different weather stations over years. From the data set, the table below shows the missing values of each variable.
 
 ```{r}
 summary(ny_noaa)
 ```
 
 
-
- By using the summary function (output below), we can see there is data missing for all five of the weather-related variables.
-
-
 Clean and Tidy the dataset
+
 ```{r}
 ny_noaa = 
   tibble(ny_noaa) %>% 
@@ -216,10 +215,10 @@ ny_noaa %>%
 The most commonly observed values for snowfall is 0 because in general, there is only snowfalls in winters. The dataset records a zero on each and everyday there is no snowfalls.
 
 
-Make Plots of the average max temperature in January and in July in each station across years
+Make plots of the average max temperature in January and in July in each station across years
 
+First thing to do is to do some manipulations to the dataset:
 
-First thing to do is to do some munipulations to the dataset:
 ```{r}
 ny_noaa_JJ = 
   tibble(ny_noaa) %>% 
@@ -250,10 +249,10 @@ ny_noaa_JJ %>%
   theme(axis.text.x = element_text(angle = 90))
 ```
 
-Comparing the two scatterplots for January and July tmax averages in different stations across years, it can be observed that the average maximum temperatures in January is lower than that in July. The range of tmax in January is larger than that in July that in different stations, the tmax detected has larger variance in January. Maximum temperature in January is less stable than than in July that the major trends of scatter points in January are floating. Also, there are outliers shown in the graph. For example, in January, 1881, there is one station detecting tmax significantly lower than that of the other stations. 
+Comparing the two scatterplots for January and July tmax averages in different stations across years, it can be observed that the average maximum temperatures in January is lower than that in July. The range of tmax in January is larger than that in July that in different stations, the tmax detected has larger variance in January. The change in maximum temperature over years in January is less stable than in July. Also, there are outliers shown in the graph, ex. in January, 1881, there is one station detecting tmax significantly lower than that of the other stations. 
 
 
-Make another two-panel plots - patchwork， violin
+Make another two-panel plots showing tmax vs. tmin and snowfall distribution
 
 First is to make a tmax and tmin plot
 ```{r}
@@ -272,7 +271,7 @@ tmin_tmax =
   
 ```
 
-Second is to find the snowfall plot
+Second is to make a snowfall plot
 
 ```{r}
 snowfall = 
